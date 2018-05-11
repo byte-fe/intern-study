@@ -4,7 +4,7 @@ Great study plan for internship.
 
 ## Plan 1 weekly-side-project
 
-1. 每周导师轮值出题, 格式参考: 
+1. 每周导师轮值出题, 格式参考: https://github.com/byte-fe/intern-study
 
 > 原则上控制代码量不要太多, 跟业务能有一定匹配度
 
