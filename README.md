@@ -34,3 +34,5 @@ Great study plan for internship.
 
 - [the-art-of-reading](https://github.com/n0ruSh/the-art-of-reading/issues) 网易一个同学非常认真的学习笔记
 
+- [前端开发者指南](https://github.com/xitu/front-end-handbook-2017) 掘金翻译的 WEB 技术大杂烩
+
