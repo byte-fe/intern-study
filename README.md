@@ -28,6 +28,8 @@ Great study plan for internship.
 
 - [What the f*ck JavaScript](https://github.com/denysdovhan/wtfjs/blob/master/README.md) 很多新同学可能会对 JS 这门语言一些特性感觉懵逼, 成为老司机之路从这里开始
 
+- [数据结构和常见算法的 js 实现和解释](https://github.com/trekhleb/javascript-algorithms) 公司很重视这些基础, 你懂的
+
 - [30 Seconds of CSS](https://atomiks.github.io/30-seconds-of-css/) 学习一些常用的 CSS 套路
 
 - [React 设计模式](https://krasimir.gitbooks.io/react-in-patterns/content/) 学完 react 入门文档后, 继续看这里
