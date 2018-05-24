@@ -20,6 +20,8 @@ Great study plan for internship.
 
 > 请养成记笔记习惯, 在学习过程中遇到问题 => 解决问题 => 存档记录
 
+(格式参考: https://github.com/byte-fe/intern-study/issues/2)
+
 ## Plan 3 Reading list
 
 - [ECMAScript 6 入门](http://es6.ruanyifeng.com/) 我们所有项目都是 ES6 语法, 系统学习 JS 这门语言从这开始
