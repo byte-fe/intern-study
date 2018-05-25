@@ -133,7 +133,6 @@ body,
 #__nuxt,
 #__layout {
   width: 100%;
-  height: 100%;
 }
 </style>
 
@@ -189,7 +188,7 @@ body,
   position: relative;
   overflow: hidden;
   width: auto;
-  height: 100%;
+  min-height : 1332px;
   background-color: rgb(215, 73, 73);
   background: radial-gradient(white, red);
   .title
