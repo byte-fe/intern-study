@@ -14,7 +14,7 @@
         <li v-for="(item,index) in gifts" :key="index" v-bind:style="{transform: transformGift(index)}">{{item}}</li>
       </ul>
     </div>
-    <div class='pointer' @click="chou">
+    <div class='pointer' @click="lucky">
       <img src='~assets/2.png'>
     </div>
   <div class='result'>{{result}}</div>
@@ -69,56 +69,51 @@ export default {
       let angle = 360 / this.gifts.length
       return `rotate(${360 / (2 * this.gifts.length) - 90 + angle * index}deg)`
     },
-    async chou() {
+    async lucky() {
       let myPanel = document.getElementsByClassName('lottery-box')[0]
       let myMain = document.querySelector('.main')
       myMain.style.height = document.querySelector('body').height
       this.illumination = 'illumination2'
       myPanel.style.transition = 'none'
       myPanel.style.transform = 'rotate(0)'
-      await axios
-        .get('api/lottery/lottery')
-        .then(response => {
-          let n = parseInt(response.data.result)
-          let myResult = ''
-          this.result = '结果马上出来～'
-          let deg = 0 //实际要转的角度
-          window.setTimeout(() => {
-            this.illumination = 'illumination1'
-          }, 7000)
-          switch (n) {
-            case 0: //给指针定到转多少度时是安慰奖
-              deg += [0, 144, 252][Math.floor(Math.random() * 3)] + 72
-              myResult = '😄谢谢参与，也许好运就在下次哦😄'
-              break
-            case 1: //给指针定到转多少度时是一等奖（100元话费）
-              deg = 180 + 72
-              myResult = '😊牛逼了！恭喜获得：100元话费😊'
-              break
-            case 2: //给指针定到转多少度时是二等奖（1元现金）
-              deg = 36 * 11 + 72
-              myResult = '🌹恭喜获得：1元现金🌹'
-              break
-            case 3: //给指针定到转多少度时是三等奖（10元话费）
-              deg = -36 * 2 + 72
-              myResult = '✨恭喜获得：10元话费✨'
-              break
-            case 4:
-              deg = -36 + 72
-              myResult = '✨哎呦不错哦，恭喜获得：50积分✨'
-              break
-          }
-          window.setTimeout(() => {
-            this.result = myResult
-          }, 5000)
-          //使指针最后不指在中间
-          this.deg = deg + 1080 - 360 + (Math.random() - 0.5) * 32
-          myPanel.style.transition = '5s ease'
-          myPanel.style.transform = 'rotate(' + this.deg + 'deg)'
-        })
-        .catch(function(error) {
-          console.log(error)
-        })
+      const response = await this.$axios.$get('api/lottery/lottery')
+      console.log(response)
+      let n = parseInt(response.result)
+      let myResult = ''
+      this.result = '结果马上出来～'
+      let deg = 0 //实际要转的角度
+      window.setTimeout(() => {
+        this.illumination = 'illumination1'
+      }, 7000)
+      switch (n) {
+        case 0: //给指针定到转多少度时是安慰奖
+          deg += [0, 144, 252][Math.floor(Math.random() * 3)] + 72
+          myResult = '😄谢谢参与，也许好运就在下次哦😄'
+          break
+        case 1: //给指针定到转多少度时是一等奖（100元话费）
+          deg = 180 + 72
+          myResult = '😊牛逼了！恭喜获得：100元话费😊'
+          break
+        case 2: //给指针定到转多少度时是二等奖（1元现金）
+          deg = 36 * 11 + 72
+          myResult = '🌹恭喜获得：1元现金🌹'
+          break
+        case 3: //给指针定到转多少度时是三等奖（10元话费）
+          deg = -36 * 2 + 72
+          myResult = '✨恭喜获得：10元话费✨'
+          break
+        case 4:
+          deg = -36 + 72
+          myResult = '✨哎呦不错哦，恭喜获得：50积分✨'
+          break
+      }
+      window.setTimeout(() => {
+        this.result = myResult
+      }, 5000)
+      //使指针最后不指在中间
+      this.deg = deg + 1080 - 360 + (Math.random() - 0.5) * 32
+      myPanel.style.transition = '5s ease'
+      myPanel.style.transform = 'rotate(' + this.deg + 'deg)'
     }
   },
   async asyncData({ req, app }) {
