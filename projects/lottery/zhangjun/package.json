@@ -1,0 +1,23 @@
+{
+  "name": "draw",
+  "version": "0.1.0",
+  "private": true,
+  "description": "抽奖的小demo",
+  "main": "index.js",
+  "scripts": {
+    "dev": "fe dev",
+    "start": "fe start",
+    "build": "fe build",
+    "test": "fe test"
+  },
+  "keywords": [],
+  "author": "",
+  "dependencies": {
+    "babel-plugin-transform-runtime": "^6.23.0"
+  },
+  "devDependencies": {
+    "postcss-px-to-viewport": "^0.0.3",
+    "postcss-viewport-units": "^0.1.4",
+    "prettier": "^1.10.2"
+  }
+}
