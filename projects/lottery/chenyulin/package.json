@@ -1,0 +1,21 @@
+{
+  "name": "lottery",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A basic FE project.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "fe dev",
+    "start": "fe start",
+    "build": "fe build",
+    "test": "fe test"
+  },
+  "keywords": [],
+  "author": "",
+  "dependencies": {},
+  "devDependencies": {
+    "postcss-px-to-viewport": "^0.0.3",
+    "postcss-viewport-units": "^0.1.4",
+    "prettier": "^1.10.2"
+  }
+}
