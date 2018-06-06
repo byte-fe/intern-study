@@ -2,7 +2,7 @@
 
 Great study plan for internship.
 
-## Plan 1 weekly-side-project
+## Plan 1 Weekly side project
 
 1. 每周导师轮值出题, 格式参考: https://github.com/byte-fe/intern-study/issues/1
 
@@ -13,6 +13,14 @@ Great study plan for internship.
 3. 提交 PR 到 master (`@`自己导师)
 
 > 请导师们在闲暇时逐行 review 代码, 您的评价非常有价值; 也请实习生们互相 review, 你知道的知识通过 code share 给别的同学;
+
+- [[第一期] 一个全栈的抽奖活动](https://github.com/byte-fe/intern-study/issues/1)
+
+  + [code](https://github.com/byte-fe/intern-study/pull/4) / [demo](http://chenyulin.bytedance.io/lottery) ★★★★ @sunshinelover 
+  + [code](https://github.com/byte-fe/intern-study/pull/5) / [demo](http://zhangjun.bytedance.io/lottery) ★★ @youmengme
+  + [code](https://github.com/byte-fe/intern-study/pull/6) / [demo](http://xiaoyanhui.bytedance.io/lottery) ★★★ @deligent-ant 
+
+- [[第二期]无限滚动加载的通用组件](https://github.com/byte-fe/intern-study/issues/8)
 
 ## Plan 2 Learning notes
 
