@@ -42,6 +42,8 @@ Great study plan for internship.
 
 - [30 Seconds of CSS](https://atomiks.github.io/30-seconds-of-css/) 学习一些常用的 CSS 套路
 
+- [CSS Protips](https://github.com/AllThingsSmitty/css-protips) 快速熟悉 css 常用技巧
+
 - [React 设计模式](https://krasimir.gitbooks.io/react-in-patterns/content/) 学完 react 入门文档后, 继续看这里
 
 - [the-art-of-reading](https://github.com/n0ruSh/the-art-of-reading/issues) 网易一个同学非常认真的学习笔记
