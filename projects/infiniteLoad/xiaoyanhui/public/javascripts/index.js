@@ -1,6 +1,6 @@
 ;(function() {
   infiniteLoad({
-    domString: '', //页尾栏  选择器
+    domString: '', //页尾栏  选择器,可以省略
     fatherString: '.content', //父亲元素 选择器
     childString: 'li', //标签名字
     template: '<p><%= date %></p><p><%= desc %></p><img src=<%= pic %> >', //模版字符
