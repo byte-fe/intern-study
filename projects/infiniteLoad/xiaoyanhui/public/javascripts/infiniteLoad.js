@@ -4,12 +4,10 @@
     throw new Error('请引入underscore.js插件：')
   }
   //需要用到的变量声明:
-  let contentCache = [] //缓存每个li的数据
   let newData = [] //缓存每一次新加载的数据
   let page = 0 //加载的次数
   let liObserver = new IntersectionObserver(visiableCallBack) //插入的子元素的监视
   let inputParams = {} //外面输入的参数
-
   //通用函数
   function queryAll(string) {
     return Array.from(document.querySelectorAll(string))
@@ -22,14 +20,9 @@
     entries.forEach(item => {
       index = item.target.dataset.index
       if (item.intersectionRatio <= 0) {
-        item.target.innerHtml = ''
         item.target.style.visibility = 'hidden'
       } else {
         item.target.style.visibility = 'visible'
-        content = contentCache[index]
-        let compiled = _.template(inputParams.template)
-        let innerHtml = compiled(content)
-        item.target.innerHTML = innerHtml
       }
     })
   }
@@ -48,12 +41,12 @@
 
   //渲染函数
   function updateUI(data) {
-    let lastIndex = contentCache.length
-    contentCache = contentCache.concat(data)
     let contentDom = queryAll(inputParams.fatherString)[0]
     data.forEach(item => {
       let li = document.createElement(inputParams.childString || 'li')
-      li.dataset.index = lastIndex++
+      let compiled = _.template(inputParams.template)
+      let innerHtml = compiled(item)
+      li.innerHTML = innerHtml
       contentDom.appendChild(li)
       liObserver.observe(li)
     })
@@ -83,8 +76,7 @@
       observerDom = document.createElement('footer')
       observerDom.setAttribute('id', 'XYHSentinels')
       observerDom.innerHTML = '加载中......'
-      observerDom.cssText =
-        'text-align:center;color:red;border: 1px solid green;'
+      observerDom.style.textAlign = 'center'
       document.body.appendChild(observerDom)
     } else {
       observerDom = queryAll(domString)[0]
