@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  font-size: 30px;
+}
+ul {
+  width: 100%;
+  padding:0
+}
+li {
+  list-style: none;
+  display: flex;
+}
+
+.writer {
+  display: flex;
+  flex-direction: column;
+}
+.writer span,
+.writer strong {
+  display: block;
+  /* flex: 1; */
+}
+/* .slide {
+  box-shadow: 0 0 10px 10px #000;
+} */
+#loadingLi{
+  font-size: 30px;
+  text-align: center;
+}

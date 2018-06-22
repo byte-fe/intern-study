@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>无限加载</title>
+  <link rel="stylesheet" href="css/infinite.css">
+</head>
+
+<body>
+  <div class="exp-list-box" id="expListBox">
+    <ul class="exp-list" id="expList">
+    </ul>
+    <div id="result" class="ui-refresh-down"></div>
+  </div>
+
+  <script id="tpl" type="text/html">
+    <!-- 前端模板：template -->
+    <%for(let index = 0; index < dataList.length; index++) {%>
+      <div class="slide">
+        <li>
+            <img class="img" src="data:image/gif;base64,R0lGODdhAQABAPAAAP%2F%2F%2FwAAACwAAAAAAQABAEACAkQBADs%3D"
+              data-src="<%:=dataList[index].pic%>">
+            </img>
+            <div class="writer">
+            <strong><%:=dataList[index].title%></strong>
+            <span><%:=dataList[index].desc%></span>
+            </div>
+        </li>
+      </div>
+      <%}%>
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+  <script src="../node_modules/template_js/template.js"></script>
+  <script>
+    (function () {
+      let fetching = false;
+      let page = 1;
+      let slideCache = [];
+      let lastScrollY = window.pageYOffset;
+      let scrollY = window.pageYOffset;
+      let innerHeight;
+      let topViewPort;
+      let bottomViewPort;
+      let idflag = 0
+      function isVisible(id) {
+        let offTop;
+        let offsetHeight;
+        let data;
+        let node;
+
+        // 设置该节点，并且设置节点属性：node，offTop，offsetHeight
+        node = document.getElementById(id);
+        // offsetHeight是自身元素的高度
+        offsetHeight = parseInt(node.offsetHeight);
+        // 元素的上外缘距离最近采用定位父元素内壁的距离
+        offTop = parseInt(node.offsetTop);
+
+
+        if (offTop + offsetHeight > topViewPort && offTop < bottomViewPort) {
+          return true;
+        }
+        else {
+          return false;
+        }
+      }
+
+      /**
+       * 更新DOM缓存
+       **/
+      function updateItemCache(node) {
+        let list = node.querySelectorAll('.slide');
+        let len = list.length;
+        slideCache = [];
+        let obj;
+        for (let i = 0; i < len; i++) {
+          obj = {
+            node: list[i],
+            img: list[i].querySelector('.img')
+          }
+          obj.img.src = obj.img.getAttribute('data-src');
+          slideCache.push(obj);
+        };
+      }
+
+      /**
+       * 动态加载内容
+       **/
+      function fetchContent() {
+        let Loading = document.querySelector('#loadingLi')
+        if (!Loading) {
+          let result = document.querySelector('#result')
+          result.innerHTML = "<div id='loadingLi' class='loading'>加载中...</div>";
+        }
+        if (fetching) {
+          return;
+        }
+        else {
+          fetching = true;
+        }
+        axios.get('/load')
+          .then(function (result) {
+            let dataList = result.data.data;
+            let len = dataList.length;
+            let ulContainer = document.getElementById('expList');
+            let frag = document.createElement('div');
+            frag.setAttribute("id", idflag++)
+            frag.setAttribute('class', 'father')
+            let tpl = document.getElementById('tpl').innerHTML;
+            frag.innerHTML = template(tpl, { dataList })
+            ulContainer.appendChild(frag);
+
+            // 更新缓存
+            updateItemCache(frag);
+            // 已经拉去完毕，设置标识为true
+            fetching = false;
+            // 强制触发
+            handleScroll(null, true);
+            page++;
+
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+
+      /**
+       * 懒加载实现
+       **/
+      function handleDefer() {
+        // 获取dom缓存
+        let list = slideCache;
+        // 对于遍历list里的每一项，都使用一个变量，而不是在循环内部声明。节省内存，把性能高效，做到极致。
+        let thisImg;
+        for (let i = 0, len = list.length; i < len; i++) {
+          thisImg = list[i].img;
+
+          let deferSrc = list[i].img.src;
+          if (isVisible(list[i].node.parentNode.id)) {
+            // 这个函数是图片onload逻辑
+            let handler = function () {
+              if (thisImg) { }
+              let node = thisImg;
+              let src = deferSrc;
+              return function () {
+                node.src = src;
+                node.style.opacity = 1;
+              }
+            }
+            let img = new Image();
+            img.onload = handler();
+            img.src = list[i].img.src;
+          }
+        }
+      }
+
+      /**
+       * 处理滚动
+       **/
+      function handleScroll(e, force) {
+        // 如果时间间隔内，没有发生滚动，且并未强制触发加载，则do nothing，再次间隔100毫秒之后查询
+        if (!force && lastScrollY === window.scrollY) {
+          window.setTimeout(handleScroll, 100);
+          return;
+        }
+        else {
+          // 更新文档滚动位置
+          lastScrollY = window.scrollY;
+        }
+        scrollY = window.scrollY;
+        // 浏览器窗口的视口（viewport）高度赋值
+        innerHeight = window.innerHeight;
+        // 计算isVisible上下阈值
+        topViewPort = scrollY - 1000;
+        bottomViewPort = scrollY + innerHeight + 600;
+
+        // 判断是否需要加载
+        // document.body.offsetHeight;返回当前网页高度 
+        if (window.scrollY + innerHeight + 200 > document.body.offsetHeight) {
+          fetchContent();
+        }
+        // 实现懒加载
+        handleDefer();
+        window.setTimeout(handleScroll, 100);
+      }
+      window.setTimeout(handleScroll, 100);
+      fetchContent();
+    }());
+  </script>
+</body>
+
+</html>
