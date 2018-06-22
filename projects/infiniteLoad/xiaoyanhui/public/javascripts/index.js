@@ -1,5 +1,6 @@
 ;(function() {
   infiniteLoad({
+    scollDirection: 'up', //滚动方向，‘up’||‘down’
     domString: '', //页尾栏  选择器,可以省略
     fatherString: '.content', //父亲元素 选择器
     childString: 'li', //标签名字

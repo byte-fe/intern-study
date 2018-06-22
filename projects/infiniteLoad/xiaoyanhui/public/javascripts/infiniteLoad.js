@@ -1,10 +1,16 @@
 ;(function(window) {
   //检查underscore插件
   if (!window._) {
-    throw new Error('请引入underscore.js插件：')
+    throw new Error('请在使用该模块前引入underscore.js插件：')
   }
   //需要用到的变量声明:
+  let observerDom = undefined //监视的页尾栏
+  let endDom = null //如果是下拉刷新，在document最后面加一个dom,用来调节滚动
   let newData = [] //缓存每一次新加载的数据
+  let newFrament = null //缓存每一次新加载的dom片段
+  let clientWidth = window.innerHeight || document.documentElement.clientHeight
+  let rootDom = document.documentElement
+  rootDom.style.overflowY = 'auto'
   let page = 0 //加载的次数
   let liObserver = new IntersectionObserver(visiableCallBack) //插入的子元素的监视
   let inputParams = {} //外面输入的参数
@@ -29,7 +35,7 @@
 
   //页尾栏可见触发的函数
   async function load() {
-    let newData = await inputParams.cb.call(window, {
+    newData = await inputParams.cb.call(window, {
       limit: inputParams.options.limit,
       offset: inputParams.options.offset
     })
@@ -42,14 +48,22 @@
   //渲染函数
   function updateUI(data) {
     let contentDom = queryAll(inputParams.fatherString)[0]
+    newFrament = document.createDocumentFragment()
     data.forEach(item => {
       let li = document.createElement(inputParams.childString || 'li')
       let compiled = _.template(inputParams.template)
       let innerHtml = compiled(item)
       li.innerHTML = innerHtml
-      contentDom.appendChild(li)
+      newFrament.appendChild(li)
       liObserver.observe(li)
     })
+    if (inputParams.scollDirection === 'down') {
+      contentDom.innerHTML = ''
+      contentDom.appendChild(newFrament)
+      rootDom.scrollTop = endDom.offsetTop - clientWidth
+    } else {
+      contentDom.appendChild(newFrament)
+    }
   }
 
   //生成一个函数
@@ -59,7 +73,8 @@
     childString,
     template,
     options,
-    cb
+    cb,
+    scollDirection = 'up'
   }) {
     inputParams = {
       domString,
@@ -67,17 +82,24 @@
       template,
       options,
       fatherString,
-      cb
+      cb,
+      scollDirection
     }
     //解决触发观察函数的dom
-    let observerDom = undefined
+
     if (!domString) {
       //生成观察的dom
-      observerDom = document.createElement('footer')
+      observerDom = document.createElement('div')
       observerDom.setAttribute('id', 'XYHSentinels')
       observerDom.innerHTML = '加载中......'
       observerDom.style.textAlign = 'center'
-      document.body.appendChild(observerDom)
+      if (scollDirection === 'down') {
+        document.body.prepend(observerDom)
+        endDom = document.createElement('div')
+        document.body.appendChild(endDom)
+      } else {
+        document.body.appendChild(observerDom)
+      }
     } else {
       observerDom = queryAll(domString)[0]
     }
