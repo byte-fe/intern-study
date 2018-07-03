@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>无限加载</title>
+  <link rel="stylesheet" href="css/infinite.css">
+</head>
+
+<body>
+  <div class="exp-list-box" id="expListBox">
+    <ul class="exp-list" id="expList">
+    </ul>
+    <div id="result"></div>
+  </div>
+  <script src="infiniteLoader.js"></script>
+  <script id="tpl" type="text/html">
+    <!-- 前端模板：template -->
+    <%for(let index = 0; index < dataList.length; index++) {%>
+      <div class="slide">
+        <li>
+            <img class="img" src="data:image/gif;base64,R0lGODdhAQABAPAAAP%2F%2F%2FwAAACwAAAAAAQABAEACAkQBADs%3D"
+              data-src="<%:=dataList[index].pic%>">
+            </img>
+            <div class="writer">
+            <strong><%:=dataList[index].title%></strong>
+            <span><%:=dataList[index].desc%></span>
+            </div>
+        </li>
+      </div>
+      <%}%>
+  </script>
+  <script src="infiniteLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+  <script src="../node_modules/template_js/template.js"></script>
+  <script>
+    /**
+     * 调用组件
+     * @param container 前端模板的id（必须)
+     * @param myinterface 获取数据的接口（必须)
+     * @param loadingContainer 放菊花的容器
+     * @param loadingContent 具体菊花
+     * @param loadingID 菊花id
+     */
+    let a = new infiniteLoader({
+      container: "#tpl",
+      myinterface: '/load',
+      loadingContainer: '#result',
+      loadingContent: "<div id='loadingLi' class='loading'>加载中...</div>",
+      loadingID: '#loadingLi'
+    });
+  </script>
+</body>
+
+</html>
