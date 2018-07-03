@@ -1,3 +1,6 @@
+/**
+ * mock数据用
+ */
 const serve = require('koa-static')
 const Koa = require('koa')
 const app = new Koa()
@@ -7,7 +10,7 @@ function rnd(n, m) {
   return Math.floor(Math.random() * (m - n) + n)
 }
 
-app.use(function* (next) {
+app.use(function*(next) {
   if (this.req.url == '/load') {
     this.body = myjson
   } else {
